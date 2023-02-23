@@ -58,6 +58,25 @@ def FoodSupply(items, years, quantities, regions=None, elements=None):
 
     return data
 
+def scale_element(food, element, scale, items=None):
+
+    if np.isscalar(items):
+        items = [items]
+
+    input_item_list = food.Item.values.tolist()
+
+    if items is None or np.sort(items) is np.sort(input_item_list):
+        items = food.Item.values
+
+    sel = {"Item":items}
+
+    out = copy.deepcopy(food)
+
+    # Scale items
+    out[element].loc[sel] *= scale
+
+    return out
+
 def scale_food(food, scale, origin, items=None, constant=False, fallback=None):
 
     if np.isscalar(items):
